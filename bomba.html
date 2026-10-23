@@ -1,0 +1,223 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Canvas: recorte de una imagen</title>
+</head>
+<body>
+
+  <p>Imagen a usar:</p>
+
+  <!--
+    Elemento img:
+    id: identificador de la imagen.
+    width: ancho de visualización en píxeles.
+    height: alto de visualización en píxeles.
+    src: ruta del archivo de imagen.
+
+    La imagen se muestra completa con un tamaño
+    de 500 x 500 píxeles, independientemente de
+    sus dimensiones originales.
+  -->
+  <img id="bomba" width="500" height="500"
+       src="bomba.png" alt="Imagen original de la bomba">
+
+
+  <p>Canvas:</p>
+
+  <!--
+    Elemento canvas:
+    id: identificador para acceder desde JavaScript.
+    width: ancho del área de dibujo en píxeles.
+    height: alto del área de dibujo en píxeles.
+    style: establece un borde alrededor del canvas.
+
+    El área de dibujo mide 320 x 232 píxeles.
+  -->
+  <canvas id="micanvas" width="320" height="232"
+          style="border:1px solid #d3d3d3;">
+    Tu navegador no soporta canvas.
+  </canvas>
+
+
+  <script>
+    /*
+     * window.onload
+     *
+     * Descripción:
+     *   Evento que se ejecuta cuando el documento HTML
+     *   y sus recursos iniciales han terminado de cargar.
+     *
+     *   Se utiliza para iniciar las instrucciones
+     *   que trabajan con el canvas.
+     *
+     * Parámetros:
+     *   La función asignada no declara parámetros.
+     */
+    window.onload = function() {
+
+      /*
+       * Creamos un objeto de tipo Image.
+       *
+       * new Image()
+       *
+       * Parámetros:
+       *   En este ejemplo no recibe parámetros.
+       *
+       * Retorna:
+       *   Un objeto Image que permite cargar una imagen
+       *   y utilizarla posteriormente en el canvas.
+       *
+       * IMPORTANTE:
+       *   Este objeto es independiente del elemento
+       *   <img> declarado en el documento HTML.
+       */
+      var img = new Image();
+
+
+      /*
+       * Asignamos un nombre al objeto.
+       *
+       * name:
+       *   Propiedad personalizada que utilizamos
+       *   para identificar la imagen.
+       *
+       *   No modifica el archivo original.
+       */
+      img.name = "bomba";
+
+
+      /*
+       * Obtenemos el elemento canvas.
+       *
+       * document.getElementById(id)
+       *
+       * Parámetros:
+       *   id: cadena que identifica al elemento HTML.
+       *
+       * Retorna:
+       *   El elemento encontrado o null si no existe.
+       */
+      var c = document.getElementById("micanvas");
+
+
+      /*
+       * Obtenemos el contexto de dibujo.
+       *
+       * canvas.getContext(tipo)
+       *
+       * Parámetros:
+       *   tipo: cadena que indica el contexto.
+       *         "2d" permite dibujar imágenes y
+       *         figuras en dos dimensiones.
+       *
+       * Retorna:
+       *   Un objeto con métodos y propiedades
+       *   para realizar dibujos en el canvas.
+       */
+      var ctx = c.getContext("2d");
+
+
+      /*
+       * img.onload
+       *
+       * Descripción:
+       *   Evento que se ejecuta cuando la imagen
+       *   ha terminado de cargarse correctamente.
+       *
+       *   Permite asegurar que la imagen esté
+       *   disponible antes de intentar dibujarla.
+       *
+       * Parámetros:
+       *   La función asignada no declara parámetros.
+       */
+      img.onload = function() {
+
+        /*
+         * ctx.drawImage(imagen, sx, sy, sw, sh,
+         *               dx, dy, dw, dh)
+         *
+         * Parámetros:
+         *
+         *   imagen: objeto Image que contiene la imagen
+         *           original que se desea dibujar.
+         *
+         *   sx: coordenada horizontal inicial
+         *       del recorte en la imagen original.
+         *
+         *   sy: coordenada vertical inicial
+         *       del recorte en la imagen original.
+         *
+         *   sw: ancho del recorte original,
+         *       expresado en píxeles.
+         *
+         *   sh: alto del recorte original,
+         *       expresado en píxeles.
+         *
+         *   dx: coordenada horizontal donde comienza
+         *       el dibujo dentro del canvas.
+         *
+         *   dy: coordenada vertical donde comienza
+         *       el dibujo dentro del canvas.
+         *
+         *   dw: ancho final del dibujo en el canvas.
+         *
+         *   dh: alto final del dibujo en el canvas.
+         *
+         * Descripción:
+         *   Selecciona una región rectangular de
+         *   la imagen original y la dibuja dentro
+         *   del canvas.
+         *
+         * En este ejemplo:
+         *
+         *   imagen = img
+         *
+         *   sx = 0       sy = 928
+         *   sw = 320     sh = 232
+         *
+         *   dx = 0       dy = 0
+         *   dw = 320     dh = 232
+         *
+         * Se selecciona una región de 320 x 232
+         * píxeles de la imagen original, comenzando
+         * en la posición (0, 928).
+         *
+         * El recorte se dibuja desde la posición
+         * (0, 0) del canvas, ocupando toda su área.
+         *
+         * El tamaño del recorte no se modifica.
+         */
+        ctx.drawImage(img, 0, 928, 320, 232,
+                           0, 0, 320, 232);
+
+      };
+
+
+      /*
+       * Establecemos la ruta de la imagen.
+       *
+       * src:
+       *   Ruta del archivo que se desea cargar.
+       *
+       * Descripción:
+       *   Al asignar esta propiedad, el navegador
+       *   inicia la carga de la imagen.
+       *
+       *   Cuando termina correctamente, se ejecuta
+       *   la función asignada a img.onload.
+       *
+       * IMPORTANTE:
+       *   Se asigna src después de definir onload
+       *   para evitar perder el evento si la imagen
+       *   se encuentra almacenada en caché.
+       */
+      img.src = "bomba.png";
+
+    };
+  </script>
+
+</body>
+</html>
+

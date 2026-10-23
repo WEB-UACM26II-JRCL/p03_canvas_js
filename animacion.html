@@ -1,0 +1,357 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Canvas: animación de imágenes</title>
+</head>
+<body>
+
+  <p>Imagen a usar:</p>
+
+  <!--
+    Muestra la imagen completa.
+
+    id: identificador del elemento HTML.
+    width: ancho de visualización en píxeles.
+    height: alto de visualización en píxeles.
+    src: ruta del archivo de imagen.
+
+    Las dimensiones de visualización no modifican
+    las dimensiones originales del archivo.
+  -->
+  <img id="bomba" width="500" height="500"
+       src="bomba.png" alt="Hoja de sprites de una bomba">
+
+
+  <p>Canvas:</p>
+
+  <!--
+    Área donde se mostrará la animación.
+
+    id: identificador del canvas.
+    width: ancho del área de dibujo en píxeles.
+    height: alto del área de dibujo en píxeles.
+    style: establece un borde alrededor del canvas.
+
+    Cada cuadro de la animación mide 320 x 232 píxeles.
+  -->
+  <canvas id="micanvas" width="320" height="232"
+          style="border:1px solid #d3d3d3;">
+    Tu navegador no soporta canvas.
+  </canvas>
+
+
+  <script>
+    /*
+     * window.onload
+     *
+     * Descripción:
+     *   Evento que se ejecuta cuando la página HTML
+     *   y sus recursos iniciales terminan de cargar.
+     *
+     *   Permite iniciar las instrucciones que trabajan
+     *   con el canvas.
+     *
+     * Parámetros:
+     *   La función asignada no declara parámetros.
+     */
+    window.onload = function() {
+
+      /*
+       * Creamos un objeto Image.
+       *
+       * new Image()
+       *
+       * Parámetros:
+       *   En este ejemplo no recibe parámetros.
+       *
+       * Retorna:
+       *   Un objeto Image que permite cargar una
+       *   imagen para utilizarla en el canvas.
+       */
+      var img = new Image();
+
+      /*
+       * Asignamos un nombre personalizado.
+       *
+       * name:
+       *   Identificador adicional para el objeto.
+       *   No modifica el archivo original.
+       */
+      img.name = "bomba";
+
+
+      /*
+       * Obtenemos el elemento canvas.
+       *
+       * document.getElementById(id)
+       *
+       * Parámetros:
+       *   id: identificador del elemento HTML.
+       *
+       * Retorna:
+       *   El elemento encontrado o null si no existe.
+       */
+      var c = document.getElementById("micanvas");
+
+
+      /*
+       * Obtenemos el contexto de dibujo.
+       *
+       * canvas.getContext(tipo)
+       *
+       * Parámetros:
+       *   tipo: cadena que identifica el contexto.
+       *         "2d" permite dibujar en dos dimensiones.
+       *
+       * Retorna:
+       *   Un objeto que proporciona métodos y
+       *   propiedades para dibujar en el canvas.
+       */
+      var ctx = c.getContext("2d");
+
+
+      /*
+       * Coordenadas del recorte de la imagen original.
+       *
+       * x: posición horizontal del cuadro actual.
+       * y: posición vertical del cuadro actual.
+       *
+       * Inicialmente se selecciona el cuadro ubicado
+       * en la esquina superior izquierda: (0, 0).
+       */
+      var x = 0;
+      var y = 0;
+
+
+      /*
+       * Función animacion()
+       *
+       * Parámetros:
+       *   No recibe parámetros.
+       *
+       * Retorna:
+       *   No retorna ningún valor.
+       *
+       * Descripción:
+       *   Realiza una actualización de la animación.
+       *
+       *   1. Limpia el contenido anterior del canvas.
+       *   2. Dibuja el cuadro actual de la imagen.
+       *   3. Actualiza la coordenada horizontal.
+       *   4. Cuando termina una fila, avanza
+       *      a la siguiente.
+       *
+       *   Al terminar la última fila, regresa
+       *   al primer cuadro de la imagen.
+       */
+      function animacion() {
+
+        /*
+         * ctx.clearRect(x, y, ancho, alto)
+         *
+         * Parámetros:
+         *   x: coordenada horizontal inicial del área
+         *      que se desea limpiar.
+         *
+         *   y: coordenada vertical inicial del área
+         *      que se desea limpiar.
+         *
+         *   ancho: ancho del área que se limpiará.
+         *
+         *   alto: alto del área que se limpiará.
+         *
+         * Descripción:
+         *   Borra los píxeles de una región rectangular,
+         *   dejándolos transparentes.
+         *
+         * En este ejemplo se limpia todo el canvas:
+         *
+         *   x = 0
+         *   y = 0
+         *   ancho = c.width  (320 píxeles)
+         *   alto = c.height (232 píxeles)
+         *
+         * Esto evita que los dibujos anteriores
+         * permanezcan visibles durante la animación.
+         */
+        ctx.clearRect(0, 0, c.width, c.height);
+
+
+        /*
+         * ctx.drawImage(imagen, sx, sy, sw, sh,
+         *               dx, dy, dw, dh)
+         *
+         * Parámetros:
+         *
+         *   imagen: objeto Image que se dibujará.
+         *
+         *   sx: coordenada horizontal inicial
+         *       del recorte en la imagen original.
+         *
+         *   sy: coordenada vertical inicial
+         *       del recorte en la imagen original.
+         *
+         *   sw: ancho del recorte original.
+         *
+         *   sh: alto del recorte original.
+         *
+         *   dx: coordenada horizontal donde se
+         *       dibujará el recorte en el canvas.
+         *
+         *   dy: coordenada vertical donde se
+         *       dibujará el recorte en el canvas.
+         *
+         *   dw: ancho final del dibujo.
+         *
+         *   dh: alto final del dibujo.
+         *
+         * En este ejemplo:
+         *
+         *   imagen = img
+         *   sx = x         sy = y
+         *   sw = 320       sh = 232
+         *   dx = 0         dy = 0
+         *   dw = 320       dh = 232
+         *
+         * Descripción:
+         *   Selecciona un cuadro de 320 x 232 píxeles
+         *   de la imagen original.
+         *
+         *   Las variables x e y determinan cuál
+         *   de los cuadros se está mostrando.
+         *
+         *   El cuadro se dibuja ocupando todo el canvas.
+         */
+        ctx.drawImage(img, x, y, 320, 232,
+                           0, 0, 320, 232);
+
+
+        /*
+         * Actualizamos la coordenada horizontal.
+         *
+         * x = (x + 320) % 1600;
+         *
+         * Descripción:
+         *   Se avanza horizontalmente 320 píxeles,
+         *   que corresponden al ancho de un cuadro.
+         *
+         *   El operador % (módulo) obtiene el
+         *   residuo de una división.
+         *
+         *   Como la imagen contiene 5 cuadros
+         *   horizontales de 320 píxeles:
+         *
+         *       5 * 320 = 1600
+         *
+         *   Los valores sucesivos de x son:
+         *
+         *       0, 320, 640, 960, 1280, 0, ...
+         *
+         *   Cuando se alcanza 1600, el operador
+         *   módulo hace que x regrese a cero.
+         */
+        x = (x + 320) % 1600;
+
+
+        /*
+         * Avanzamos a la siguiente fila.
+         *
+         * if (x == 0)
+         *
+         * Descripción:
+         *   Cuando x vuelve a cero, significa
+         *   que se terminó de recorrer una fila.
+         *
+         *   Entonces se incrementa la coordenada y
+         *   para seleccionar la siguiente fila.
+         *
+         * y = (y + 232) % 1160;
+         *
+         *   Cada cuadro tiene 232 píxeles de alto.
+         *
+         *   La imagen contiene 5 filas:
+         *
+         *       5 * 232 = 1160
+         *
+         *   Los valores sucesivos de y son:
+         *
+         *       0, 232, 464, 696, 928, 0, ...
+         *
+         *   Al terminar la última fila, y vuelve
+         *   a cero y la animación comienza nuevamente.
+         */
+        if (x == 0) {
+          y = (y + 232) % 1160;
+        }
+
+      }
+
+
+      /*
+       * img.onload
+       *
+       * Descripción:
+       *   Evento que se ejecuta cuando la imagen
+       *   termina de cargarse correctamente.
+       *
+       * Parámetros:
+       *   La función asignada no declara parámetros.
+       *
+       *   Se utiliza para iniciar la animación
+       *   solamente cuando la imagen está disponible.
+       */
+      img.onload = function() {
+
+        /*
+         * setInterval(funcion, tiempo)
+         *
+         * Parámetros:
+         *   funcion: referencia a la función que
+         *            se ejecutará periódicamente.
+         *
+         *   tiempo: intervalo de tiempo entre
+         *           ejecuciones, en milisegundos.
+         *
+         * Descripción:
+         *   Programa ejecuciones periódicas
+         *   de la función animacion().
+         *
+         *   En este ejemplo:
+         *
+         *       tiempo = 100 milisegundos
+         *
+         *   Por lo tanto, se intentará actualizar
+         *   el canvas aproximadamente 10 veces
+         *   por segundo.
+         *
+         *   La función se pasa como animacion,
+         *   sin paréntesis, para no ejecutarla
+         *   inmediatamente.
+         */
+        setInterval(animacion, 100);
+
+      };
+
+
+      /*
+       * Establecemos la ruta del archivo.
+       *
+       * src:
+       *   Ruta de la imagen que se desea cargar.
+       *
+       * Descripción:
+       *   Inicia la carga de bomba.png.
+       *
+       *   Cuando termina correctamente, se ejecuta
+       *   el evento img.onload, que inicia la animación.
+       */
+      img.src = "bomba.png";
+
+    };
+  </script>
+
+</body>
+</html>
+

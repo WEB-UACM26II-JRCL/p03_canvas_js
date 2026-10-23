@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Canvas: línea básica</title>
+</head>
+<body>
+
+  <!--
+    Elemento canvas:
+    id: identificador para acceder desde JavaScript.
+    width: ancho del área de dibujo en píxeles.
+    height: alto del área de dibujo en píxeles.
+    style: agrega un borde para visualizar sus límites.
+  -->
+  <canvas id="canvas"
+          width="200"
+          height="100"
+          style="border:1px solid #d3d3d3;">
+    Tu navegador no soporta canvas.
+  </canvas>
+
+  <script>
+    /*
+     * document.getElementById(id)
+     *
+     * Busca un elemento HTML mediante su identificador.
+     *
+     * Parámetros:
+     *   id: cadena de texto que contiene el identificador
+     *       del elemento HTML que se desea obtener.
+     *
+     * Retorna:
+     *   El elemento HTML encontrado o null si no existe.
+     */
+    var c = document.getElementById("canvas");
+
+
+    /*
+     * getContext(contextType)
+     *
+     * Obtiene el contexto de dibujo del elemento canvas.
+     * El contexto proporciona los métodos necesarios
+     * para dibujar líneas, figuras, texto, etc.
+     *
+     * Parámetros:
+     *   contextType: cadena que indica el tipo de contexto.
+     *       "2d" permite realizar dibujos bidimensionales.
+     *
+     * Retorna:
+     *   Un objeto de contexto de dibujo 2D o null
+     *   si no se puede obtener.
+     */
+    var ctx = c.getContext("2d");
+
+
+    /*
+     * moveTo(x, y)
+     *
+     * Establece el punto inicial de un nuevo segmento
+     * dentro del trazado actual, sin dibujar una línea.
+     *
+     * Parámetros:
+     *   x: coordenada horizontal del punto inicial.
+     *   y: coordenada vertical del punto inicial.
+     *
+     * El origen (0, 0) se encuentra en la esquina
+     * superior izquierda del canvas.
+     */
+    ctx.moveTo(10, 50);
+
+
+    /*
+     * lineTo(x, y)
+     *
+     * Agrega un segmento de línea desde el punto actual
+     * hasta las coordenadas especificadas.
+     *
+     * Parámetros:
+     *   x: coordenada horizontal del punto final.
+     *   y: coordenada vertical del punto final.
+     *
+     * En este ejemplo, el segmento termina en (200, 100).
+     *
+     * Nota:
+     *   Este método define el segmento, pero todavía
+     *   no lo dibuja visualmente.
+     */
+    ctx.lineTo(100, 50);
+
+
+    /*
+     * stroke()
+     *
+     * Dibuja el contorno de los segmentos y figuras
+     * definidos en el trazado actual.
+     *
+     * Parámetros:
+     *   No recibe parámetros.
+     *
+     * En este ejemplo, dibuja la línea que comienza
+     * en (0, 0) y termina en (200, 100).
+     */
+    ctx.stroke();
+
+  </script>
+
+</body>
+</html>
+

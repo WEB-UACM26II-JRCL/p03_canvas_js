@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Canvas: círculo básico</title>
+</head>
+<body>
+
+  <!--
+    Elemento canvas:
+    id: identificador para acceder desde JavaScript.
+    width: ancho del área de dibujo en píxeles.
+    height: alto del área de dibujo en píxeles.
+    style: agrega un borde para visualizar sus límites.
+  -->
+  <canvas id="canvas"
+          width="200"
+          height="100"
+          style="border:1px solid #d3d3d3;">
+    Tu navegador no soporta canvas.
+  </canvas>
+
+  <script>
+    /*
+     * document.getElementById(id)
+     *
+     * Busca un elemento HTML mediante su identificador.
+     *
+     * Parámetros:
+     *   id: cadena de texto que contiene el identificador
+     *       del elemento HTML que se desea obtener.
+     *
+     * Retorna:
+     *   El elemento HTML encontrado o null si no existe.
+     */
+    var c = document.getElementById("canvas");
+
+
+    /*
+     * getContext(contextType)
+     *
+     * Obtiene el contexto de dibujo del elemento canvas.
+     * El contexto proporciona los métodos necesarios
+     * para dibujar líneas, círculos, figuras y texto.
+     *
+     * Parámetros:
+     *   contextType: cadena que indica el tipo de contexto.
+     *       "2d" permite realizar dibujos bidimensionales.
+     *
+     * Retorna:
+     *   Un objeto de contexto de dibujo 2D o null
+     *   si no se puede obtener.
+     */
+    var ctx = c.getContext("2d");
+
+
+    /*
+     * beginPath()
+     *
+     * Inicia un nuevo trazado, eliminando los segmentos
+     * y figuras del trazado anterior.
+     *
+     * No borra los dibujos que ya fueron renderizados
+     * sobre el canvas.
+     *
+     * Parámetros:
+     *   No recibe parámetros.
+     *
+     * Retorna:
+     *   No retorna ningún valor (undefined).
+     */
+    ctx.beginPath();
+
+
+    /*
+     * arc(x, y, radius, startAngle, endAngle, counterclockwise)
+     *
+     * Agrega un arco de circunferencia al trazado actual.
+     * Para dibujar un círculo completo se utiliza un
+     * recorrido angular de 2 * Math.PI radianes (360°).
+     *
+     * Parámetros:
+     *   x: coordenada horizontal del centro del círculo.
+     *
+     *   y: coordenada vertical del centro del círculo.
+     *
+     *   radius: radio del círculo en píxeles.
+     *
+     *   startAngle: ángulo donde inicia el arco,
+     *       expresado en radianes.
+     *
+     *   endAngle: ángulo donde termina el arco,
+     *       expresado en radianes.
+     *
+     *   counterclockwise: parámetro opcional (booleano).
+     *       false: recorre el arco en sentido horario.
+     *       true: recorre el arco en sentido antihorario.
+     *       Su valor predeterminado es false.
+     *
+     * Retorna:
+     *   No retorna ningún valor (undefined).
+     *
+     * En este ejemplo:
+     *   Centro: (95, 50).
+     *   Radio: 40 píxeles.
+     *   Ángulo inicial: 0 radianes.
+     *   Ángulo final: 2 * Math.PI radianes (360°).
+     *
+     * Math.PI representa la constante matemática PI.
+     */
+    ctx.arc(150, 80, 30, 2, 2 * Math.PI);
+
+
+    /*
+     * stroke()
+     *
+     * Dibuja el contorno de las figuras que forman
+     * parte del trazado actual.
+     *
+     * Parámetros:
+     *   No recibe parámetros.
+     *
+     * Retorna:
+     *   No retorna ningún valor (undefined).
+     *
+     * En este ejemplo, dibuja el contorno del círculo.
+     * El interior del círculo permanece sin rellenar.
+     */
+    ctx.stroke();
+
+  </script>
+
+</body>
+</html>
+

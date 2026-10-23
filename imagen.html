@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Canvas: dibujo de una imagen</title>
+</head>
+<body>
+
+  <p>Canvas:</p>
+
+  <!--
+    Elemento canvas:
+    id: identificador del elemento HTML.
+    width: ancho del área de dibujo en píxeles.
+    height: alto del área de dibujo en píxeles.
+    style: establece un borde alrededor del canvas.
+  -->
+  <canvas id="micanvas" width="626" height="347"
+          style="border:1px solid #d3d3d3;">
+    Tu navegador no soporta canvas.
+  </canvas>
+
+  <script>
+    /*
+     * window.onload
+     *
+     * Descripción:
+     *   Evento que se ejecuta cuando la página HTML
+     *   y sus recursos iniciales han terminado de cargar.
+     *
+     *   Se le asigna una función que contiene las
+     *   instrucciones para trabajar con el canvas.
+     *
+     * Parámetros:
+     *   La función definida no recibe parámetros.
+     */
+    window.onload = function() {
+
+      /*
+       * Creamos un objeto de tipo Image.
+       *
+       * new Image()
+       *
+       * Parámetros:
+       *   En este ejemplo no recibe parámetros.
+       *
+       * Descripción:
+       *   Crea un objeto que representa una imagen.
+       *   Este objeto permite cargar una imagen
+       *   para utilizarla posteriormente en canvas.
+       */
+      var img1 = new Image();
+
+      /*
+       * Asignamos un nombre identificador a la imagen.
+       *
+       * La propiedad personalizada name permite
+       * identificar el objeto dentro del programa.
+       *
+       * No modifica el archivo de imagen.
+       */
+      img1.name = "fondo";
+
+      /*
+       * Establecemos la ruta del archivo de imagen.
+       *
+       * src:
+       *   Indica la ubicación del archivo que
+       *   se desea cargar.
+       *
+       * En este ejemplo, fondo.png debe encontrarse
+       * en la misma carpeta que el archivo HTML.
+       *
+       * La carga de la imagen es asíncrona:
+       * el navegador puede continuar ejecutando
+       * instrucciones mientras carga el archivo.
+       */
+      img1.src = "fondo.png";
+
+
+      /*
+       * Obtenemos el elemento canvas.
+       *
+       * document.getElementById(id)
+       *
+       * Parámetros:
+       *   id: identificador del elemento HTML.
+       *
+       * Retorna:
+       *   El elemento encontrado o null si no existe.
+       */
+      var c = document.getElementById("micanvas");
+
+
+      /*
+       * Obtenemos el contexto de dibujo.
+       *
+       * canvas.getContext(tipo)
+       *
+       * Parámetros:
+       *   tipo: cadena que identifica el contexto.
+       *         "2d" permite dibujar en dos dimensiones.
+       *
+       * Retorna:
+       *   Un objeto con métodos para realizar dibujos.
+       */
+      var ctx = c.getContext("2d");
+
+
+      /*
+       * Función cargar()
+       *
+       * Parámetros:
+       *   No recibe parámetros.
+       *
+       * Retorna:
+       *   No retorna ningún valor.
+       *
+       * Descripción:
+       *   Verifica si la imagen ha terminado de cargar.
+       *
+       *   Si todavía no termina, programa una nueva
+       *   llamada a la función después de 100 ms.
+       *
+       *   Cuando termina de cargar correctamente,
+       *   dibuja la imagen dentro del canvas.
+       */
+      function cargar() {
+
+        /*
+         * img1.complete
+         *
+         * Propiedad booleana que indica si el proceso
+         * de carga de la imagen ha finalizado.
+         *
+         * true:  la carga ha finalizado.
+         * false: la imagen todavía está cargando.
+         *
+         * IMPORTANTE:
+         *   complete también puede ser true cuando
+         *   la carga falla. Por eso verificamos
+         *   adicionalmente naturalWidth.
+         */
+        if (img1.complete !== true) {
+
+          /*
+           * setTimeout(funcion, tiempo)
+           *
+           * Parámetros:
+           *   funcion: función que se ejecutará después
+           *            del tiempo indicado.
+           *
+           *   tiempo: tiempo de espera en milisegundos.
+           *
+           * Descripción:
+           *   Programa una ejecución de la función.
+           *   No detiene la ejecución del navegador.
+           *
+           *   En este ejemplo, después de al menos
+           *   100 ms se ejecutará cargar().
+           *
+           *   IMPORTANTE:
+           *   Se escribe cargar y no cargar(),
+           *   porque se pasa la referencia a la función.
+           */
+          setTimeout(cargar, 100);
+
+        } else if (img1.naturalWidth > 0) {
+
+          /*
+           * ctx.drawImage(imagen, sx, sy, sw, sh,
+           *               dx, dy, dw, dh)
+           *
+           * Parámetros:
+           *
+           *   imagen: objeto que contiene la imagen
+           *           que se desea dibujar.
+           *
+           *   sx: coordenada X donde comienza el
+           *       recorte en la imagen original.
+           *
+           *   sy: coordenada Y donde comienza el
+           *       recorte en la imagen original.
+           *
+           *   sw: ancho del recorte de la imagen
+           *       original, en píxeles.
+           *
+           *   sh: alto del recorte de la imagen
+           *       original, en píxeles.
+           *
+           *   dx: coordenada X donde comienza
+           *       el dibujo dentro del canvas.
+           *
+           *   dy: coordenada Y donde comienza
+           *       el dibujo dentro del canvas.
+           *
+           *   dw: ancho con el que se dibujará
+           *       la imagen en el canvas.
+           *
+           *   dh: alto con el que se dibujará
+           *       la imagen en el canvas.
+           *
+           * Descripción:
+           *   Selecciona una región rectangular de
+           *   la imagen original y la dibuja en
+           *   una región rectangular del canvas.
+           *
+           * En este ejemplo:
+           *   - El recorte inicia en (0, 0).
+           *   - El recorte mide 626 x 347 píxeles.
+           *   - Se dibuja en la posición (0, 0).
+           *   - El tamaño final es 626 x 347 píxeles.
+           */
+          ctx.drawImage(img1, 0, 0, 626, 347,
+                             0, 0, 626, 347);
+
+        } else {
+          console.error("No se pudo cargar fondo.png");
+        }
+      }
+
+
+      /*
+       * Programamos la primera ejecución de cargar().
+       *
+       * Parámetros:
+       *   cargar: función que se ejecutará.
+       *   100: tiempo de espera en milisegundos.
+       *
+       * Posteriormente, la propia función verificará
+       * si necesita programar otra ejecución.
+       */
+      setTimeout(cargar, 100);
+
+    };
+  </script>
+
+</body>
+</html>
+
